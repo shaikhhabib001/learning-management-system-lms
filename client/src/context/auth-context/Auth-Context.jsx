@@ -28,6 +28,7 @@ function AuthContext({ children }) {
             toast(responce.data.msg);
             if (responce.data.success) {
                 setActiveTab("login");
+                setRegisterFormData(initialRegisterFormData)
             }
         } catch (error) {
             toast(error.message);
@@ -53,6 +54,7 @@ function AuthContext({ children }) {
                 } else {
                     naviagte("/")
                 }
+                setLoginFormData(initialLoginFormData)
             } else {
                 setAuth({
                     authenticate: false,

@@ -14,7 +14,7 @@ function RouteGuard({ authenticate, user, element }) {
         return <Navigate to={"/"} />
     }
 
-    if (authenticate && user.role == "instructor" && location.pathname.includes("/home")) {
+    if (authenticate && user.role == "instructor" && location.pathname.includes("/")) {
         return <Navigate to={"/instructor"} />
     }
 
@@ -26,7 +26,7 @@ function RouteGuard({ authenticate, user, element }) {
         }
     }
 
-    return element
+    return element;
 
 
 }

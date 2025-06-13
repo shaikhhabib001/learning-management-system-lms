@@ -12,7 +12,7 @@ function StudentHeader() {
                 <div className='flex items-center space-x-4'>
                     <Link to={"/"} className='flex items-center hover:text-black'>
                         <GraduationCap className='h-8 w-8 mr-4' />
-                        <span className='font-extrabold md:text-xl text-[14px]'>LMS</span>
+                        <span className='font-extrabold md:text-xl text-[14px]'>LMS WIN</span>
                     </Link>
 
                     <div className='flex items-center space-x-1'>
@@ -29,7 +29,7 @@ function StudentHeader() {
                             <span className='font-bold md:text-xl text-[14px]'>My Courses</span>
                             <TvMinimalPlay />
                         </div>
-                        <Button>Log out</Button>
+                        <Button>Sign out</Button>
 
                     </div>
                 </div>

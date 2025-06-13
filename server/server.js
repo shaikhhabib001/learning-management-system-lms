@@ -7,6 +7,7 @@ import connectToDb from "./database/connect-to-db.js";
 import authRouter from "./routes/auth-routes/auth-route.js";
 import mediaRouter from "./routes/instructor-routes/mediaRoutes.js";
 import courseRouter from "./routes/instructor-routes/courseRoutes.js";
+import studentCourseRouter from "./routes/student-routes/student-course-routes.js";
 
 const app = express();
 app.use(
@@ -23,6 +24,7 @@ connectToDb();
 app.use("/api/v1/auth/", authRouter);
 app.use("/api/v1/media/", mediaRouter);
 app.use("/api/v1/instructor/course/", courseRouter);
+app.use("/api/v1/student/course/", studentCourseRouter);
 
 app.listen(port, () => {
   console.log(`Server running On Port ${port}`);
