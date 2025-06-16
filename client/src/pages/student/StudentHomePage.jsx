@@ -35,7 +35,7 @@ function StudentHomePage() {
                 <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6'>
                     {
                         [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((item) => {
-                            return <div className='border rounded-lg overflow-hidden shadow cursor-pointer'>
+                            return <div key={item} className='border rounded-lg overflow-hidden shadow cursor-pointer'>
                                 <img className='w-full h-40 object-cover' src='https://img-c.udemycdn.com/course/480x270/6566789_2e8a_7.jpg' />
                                 <div className='p-4'>
                                     <h3 className='font-bold mb-2'>MERN Stack Course</h3>

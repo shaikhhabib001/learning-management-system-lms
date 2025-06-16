@@ -12,8 +12,6 @@ function InstructorDashboardPage() {
 
     const { getAllCourses } = useContext(InstructorState)
 
-    useEffect(() => { getAllCourses() }, [])
-
     const [activeTab, setActiveTab] = useState("dashboard");
 
     const menuItems = [

@@ -11,12 +11,20 @@ import StudentHomePage from "./pages/student/StudentHomePage"
 import UpdateNewCourse from "./pages/instructor/UpdateNewCourse"
 import StudentLayout from "./pages/student/StudentLayout"
 import StudentCoursesPage from "./pages/student/StudentCoursesPage"
+import StudentCourseDetailsPage from "./pages/student/StudentCourseDetailsPage"
 
 function App() {
   const { auth, handleCheckAuth } = useContext(AuthState);
   useEffect(() => {
     handleCheckAuth();
+
   }, [])
+
+
+  useEffect(() => {
+    console.log(auth);
+
+  }, [auth])
   return (
     <>
       <Routes>
@@ -30,6 +38,7 @@ function App() {
         >
           <Route path="" element={<StudentHomePage />} />
           <Route path="student-courses" element={<StudentCoursesPage />} />
+          <Route path="student-course-details/:id" element={<StudentCourseDetailsPage />} />
         </Route>
 
 

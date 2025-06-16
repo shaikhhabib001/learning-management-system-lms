@@ -2,7 +2,49 @@ import Course from "../../models/instructor-model/Course.js";
 
 const getAllStudentCourses = async (request, responce) => {
   try {
-    const allCourses = await Course.find();
+    const {
+      category = [],
+      level = [],
+      primaryLanguage = [],
+      sortBy = "price-lowtohigh",
+    } = request.query;
+
+    console.log(request.query);
+
+    let filters = {};
+
+    if (category.length) {
+      filters.category = { $in: category.split(",") };
+    }
+
+    if (level.length) {
+      filters.level = { $in: level.split(",") };
+    }
+    if (primaryLanguage.length) {
+      filters.primaryLanguage = { $in: primaryLanguage.split(",") };
+    }
+
+    let sortParam = {};
+
+    switch (sortBy) {
+      case "price-lowtohigh":
+        sortParam.pricing = 1;
+        break;
+      case "price-hightolow":
+        sortParam.pricing = -1;
+        break;
+      case "title-atoz":
+        sortParam.title = 1;
+        break;
+      case "title-ztoa":
+        sortParam.title = -1;
+        break;
+      default:
+        sortParam.pricing = 1;
+        break;
+    }
+
+    const allCourses = await Course.find(filters).sort(sortParam);
 
     return responce.status(200).json({
       success: true,

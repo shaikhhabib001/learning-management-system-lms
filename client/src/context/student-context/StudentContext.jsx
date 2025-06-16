@@ -7,10 +7,16 @@ function StudentContext({ children }) {
   const [isLoading, setIsLoading] = useState(false)
   const [couresList, setCouresList] = useState([])
 
-  const getAllCourses = async () => {
+  const getAllStudentCourses = async (filter, sort) => {
+
+    setIsLoading(true)
+    const query = new URLSearchParams({
+      ...filter,
+      sortBy: sort
+    })
+
     try {
-      setIsLoading(true)
-      const responce = await axios.get("http://localhost:5000/api/v1/student/course/");
+      const responce = await axios.get(`http://localhost:5000/api/v1/student/course?${query}`);
       if (responce.data.success) {
         setCouresList(responce.data.data)
       }
@@ -24,7 +30,7 @@ function StudentContext({ children }) {
   }
 
   return (
-    <StudentState.Provider value={{ isLoading, couresList, getAllCourses }}>
+    <StudentState.Provider value={{ isLoading, couresList, getAllStudentCourses }}>
       {children}
     </StudentState.Provider>
   )
