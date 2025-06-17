@@ -406,4 +406,4 @@ FodyWeavers.xsd
 *.sln.iml
 
 # Environment Variable
-*.env
+/server/.env
