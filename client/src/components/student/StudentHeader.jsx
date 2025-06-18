@@ -16,7 +16,7 @@ function StudentHeader() {
                     </Link>
 
                     <div className='flex items-center space-x-1'>
-                        <Button onClick={() => navigate("/student-courses")}>
+                        <Button onClick={() => navigate("/courses")}>
                             Explore Courses
                         </Button>
                     </div>
@@ -25,7 +25,7 @@ function StudentHeader() {
 
                 <div className='flex items-center space-x-4'>
                     <div className='flex gap-4 items-center'>
-                        <div className='flex items-center cursor-pointer gap-3'>
+                        <div className='flex items-center cursor-pointer gap-3' onClick={()=> navigate("/student-courses")}>
                             <span className='font-bold md:text-xl text-[14px]'>My Courses</span>
                             <TvMinimalPlay />
                         </div>
