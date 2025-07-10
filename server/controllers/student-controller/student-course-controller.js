@@ -68,6 +68,9 @@ const getStudentCourseDetails = async (request, responce) => {
       throw new Error("No Course Found");
     }
 
+
+    
+
     return responce.status(200).json({
       success: true,
       data: course,
@@ -80,4 +83,59 @@ const getStudentCourseDetails = async (request, responce) => {
   }
 };
 
-export { getAllStudentCourses, getStudentCourseDetails };
+const getStudentsBoughtCourses = async (request, responce) => {
+  try {
+    const { id } = request.params;
+
+    const allCourses = await Course.find();
+
+    const boughtCourses = allCourses.filter((course) => {
+      return course.students.find((student) => student.studentId == id);
+    });
+
+    return responce.status(200).json({
+      success: true,
+      data: boughtCourses,
+    });
+  } catch (error) {
+    return responce.status(200).json({
+      success: false,
+      msg: error.message,
+    });
+  }
+};
+
+const checkCoursePurchaseInfo = async (request, responce) => {
+  try {
+    const { studentId, courseId } = request.params;
+
+    const course = await Course.findOne({ _id: courseId });
+
+    const indexOfStudent = course.students.findIndex(
+      (student) => student.studentId == studentId
+    );
+    if (indexOfStudent != -1) {
+      return responce.status(200).json({
+        success: true,
+        msg: "Student has bought the course",
+      });
+    } else {
+      return responce.status(200).json({
+        success: false,
+        msg: "Student has not bought the course",
+      });
+    }
+  } catch (error) {
+    return responce.status(200).json({
+      success: false,
+      msg: error.message,
+    });
+  }
+};
+
+export {
+  getAllStudentCourses,
+  getStudentCourseDetails,
+  getStudentsBoughtCourses,
+  checkCoursePurchaseInfo,
+};

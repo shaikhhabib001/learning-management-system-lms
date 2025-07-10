@@ -12,7 +12,8 @@ import UpdateNewCourse from "./pages/instructor/UpdateNewCourse"
 import StudentLayout from "./pages/student/StudentLayout"
 import StudentCoursesPage from "./pages/student/StudentCoursesPage"
 import StudentCourseDetailsPage from "./pages/student/StudentCourseDetailsPage"
-import StudentBoughtCourseDetailsPage from "./pages/student/StudentBoughtCourseDetailsPage"
+import StudentBoughtCoursePage from "./pages/student/StudentBoughtCoursePage"
+import StudentCourseProgress from "./pages/student/StudentCourseProgress"
 
 function App() {
   const { auth, handleCheckAuth } = useContext(AuthState);
@@ -40,7 +41,8 @@ function App() {
           <Route path="" element={<StudentHomePage />} />
           <Route path="courses" element={<StudentCoursesPage />} />
           <Route path="student-course-details/:id" element={<StudentCourseDetailsPage />} />
-          <Route path="student-courses" element={<StudentBoughtCourseDetailsPage />} />
+          <Route path="student-course" element={<StudentBoughtCoursePage />} />
+          <Route path="student-course-progress/:id" element={<StudentCourseProgress />} />
         </Route>
 
 

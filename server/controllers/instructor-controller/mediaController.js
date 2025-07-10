@@ -54,7 +54,7 @@ const bulkUploadMedia = async (request, responce) => {
 
     return responce.status(200).json({
       success: true,
-      msg: "Bulk  Media Uploaded successfully",
+      msg: "Bulk Media Uploaded successfully",
       result,
     });
   } catch (error) {

@@ -1,24 +1,57 @@
 import VideoPlayer from '@/components/instructor/VideoPlayer'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { AuthState } from '@/context/auth-context/Auth-Context'
+import { StudentState } from '@/context/student-context/StudentContext'
 import { CheckCircle, Globe, PlayCircle } from 'lucide-react'
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
 
 function StudentCourseDetailsPage() {
+
+    const { getStudentCouresDetails, couresDetail, createOrder, handleOnCourseNavigate } = useContext(StudentState);
+    const { auth } = useContext(AuthState);
+    const param = useParams();
+
+    const [freePreviewVideoUrl, setFreePreviewVideoUrl] = useState("");
+
+
+    // instructorId, instructorName, courseImage, courseTitle, courseId, coursePricing
+
+
+    const handleOnCourseCreate = (instructorId, instructorName, courseImage, courseTitle, courseId, coursePricing) => {
+
+        const { _id, userName, userEmail } = auth.user;
+        createOrder(_id, userName, userEmail, instructorId, instructorName, courseImage, courseTitle, courseId, coursePricing);
+    }
+
+    useEffect(() => {
+        if (couresDetail) {
+            let cpyFreePreviewVideoUrl = couresDetail?.curriculum.find((curr) => curr.freePreview)
+            setFreePreviewVideoUrl(cpyFreePreviewVideoUrl?.videoUrl)
+        }
+
+
+    }, [couresDetail])
+
+
+    useEffect(() => {
+        getStudentCouresDetails(param.id)
+    }, [param])
     return (
         <div className='mx-auto p-4'>
             <div className='bg-gray-900 text-white p-8 rounded-t-lg'>
-                <h1 className='text-3xl font-bold mb-4'>MERN Stack + Next Js</h1>
-                <p className='text-3xl mb-4'>Young someone others scientist send present industry.</p>
+                <h1 className='text-3xl font-bold mb-4'>{couresDetail?.title}</h1>
+                <p className='text-3xl mb-4'>{couresDetail?.subtitle}</p>
                 <div className='flex items-center space-x-4 mt-2 text-sm'>
-                    <span>Created By Muhammad Umer</span>
-                    <span>Created On 3/16/2025</span>
+                    <span>Created By {couresDetail?.instructorName}</span>
+                    <span>Created On {couresDetail?.date?.substring(0, 10)}</span>
                     <span className='flex items-center'>
                         <Globe className='h-4 w-4 mr-1' />
-                        English
+                        {couresDetail?.primaryLanguage}
                     </span>
                     <span>
-                        12 Students
+                        {couresDetail?.students?.length} Students
                     </span>
                 </div>
             </div>
@@ -31,18 +64,15 @@ function StudentCourseDetailsPage() {
                         </CardHeader>
                         <CardContent>
                             <ul className='grid grid-cols-1 md:grid-cols-2 gap-2'>
-                                <li className='flex items-start'>
-                                    <CheckCircle className='mr-2 h-5 w-5 text-green-500 flex-shrink-0' />
-                                    <span>React</span>
-                                </li>
-                                <li className='flex items-start'>
-                                    <CheckCircle className='mr-2 h-5 w-5 text-green-500 flex-shrink-0' />
-                                    <span>Next Js</span>
-                                </li>
-                                <li className='flex items-start'>
-                                    <CheckCircle className='mr-2 h-5 w-5 text-green-500 flex-shrink-0' />
-                                    <span>MERN Web Dev.</span>
-                                </li>
+                                {
+                                    couresDetail?.objectives?.split(",")?.map((obj, index) => {
+                                        return <li className='flex items-start' key={index}>
+                                            <CheckCircle className='mr-2 h-5 w-5 text-green-500 flex-shrink-0' />
+                                            <span>{obj}</span>
+                                        </li>
+                                    })
+                                }
+
                             </ul>
                         </CardContent>
                     </Card>
@@ -51,7 +81,7 @@ function StudentCourseDetailsPage() {
                             <CardTitle>Course Description</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            South behind southern painting pull exist in. Another little more condition sing. Adult imagine not fly point eye. Explain firm marriage mission boy.
+                            {couresDetail?.description}
                         </CardContent>
                     </Card>
                     <Card>
@@ -60,18 +90,15 @@ function StudentCourseDetailsPage() {
                         </CardHeader>
                         <CardContent>
                             <ul>
-                                <li className='flex items-center mb-4'>
-                                    <PlayCircle className='mr-2 h-4 w-4' />
-                                    <span>Intro To MERN</span>
-                                </li>
-                                <li className='flex items-center mb-4'>
-                                    <PlayCircle className='mr-2 h-4 w-4' />
-                                    <span>Intro To MERN</span>
-                                </li>
-                                <li className='flex items-center mb-4'>
-                                    <PlayCircle className='mr-2 h-4 w-4' />
-                                    <span>Intro To MERN</span>
-                                </li>
+                                {
+                                    couresDetail?.curriculum?.map((curr, index) => {
+                                        return <li key={index} className='flex items-center mb-4'>
+                                            <PlayCircle className='mr-2 h-4 w-4' />
+                                            <span>{curr.title}</span>
+                                        </li>
+
+                                    })
+                                }
                             </ul>
                         </CardContent>
                     </Card>
@@ -82,14 +109,14 @@ function StudentCourseDetailsPage() {
                     <Card className={"sticky top-4"}>
                         <CardContent className={"p-6"}>
                             <div className='aspect-video mb-4 rounded-lg flex items-center justify-between'>
-                                <VideoPlayer url={"https://www.youtube.com/watch?v=IA8JWGP13dI&list=PLu0W_9lII9agiCUZYRsvtGTXdxkzPyItg&index=3"} />
+                                <VideoPlayer url={freePreviewVideoUrl} />
                             </div>
                             <div className='mb-4'>
                                 <span className='text-3xl font-bold'>
-                                    $ 16
+                                    $ {couresDetail?.pricing}
                                 </span>
                             </div>
-                            <Button className={"w-full"}>Buy Now</Button>
+                            <Button onClick={() => handleOnCourseCreate(couresDetail?.instructorId, couresDetail?.instructorName, couresDetail?.image, couresDetail?.title, couresDetail?._id, couresDetail?.pricing)} className={"w-full"}>Buy Now</Button>
                         </CardContent>
 
                     </Card>

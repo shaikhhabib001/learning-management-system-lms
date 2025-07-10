@@ -102,7 +102,6 @@ function AuthContext({ children }) {
         )
         toast("Logout Successfully");
         naviagte("/auth");
-
     }
 
 

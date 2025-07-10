@@ -8,10 +8,7 @@ const registerUser = async (request, responce) => {
   try {
     const { userName, userEmail, userPassword, role } = request.body;
     if (!userName || !userEmail || !userPassword || !role) {
-      return responce.status(200).json({
-        success: false,
-        msg: "All fields are required",
-      });
+      throw new Error("All fields are required");
     }
 
     const existingUser = await User.findOne({
@@ -19,10 +16,7 @@ const registerUser = async (request, responce) => {
     });
 
     if (existingUser) {
-      return responce.status(200).json({
-        success: false,
-        msg: "User already exists",
-      });
+      throw new Error("User already exists");
     }
 
     const hashedPassword = await bcrypt.hash(userPassword, 10);
@@ -40,7 +34,7 @@ const registerUser = async (request, responce) => {
       userId: newlyCreatedUser?._id,
     });
   } catch (error) {
-    return responce.status(500).json({
+    return responce.status(200).json({
       success: false,
       msg: error.message,
     });
@@ -51,19 +45,13 @@ const loginUser = async (request, responce) => {
   try {
     const { userEmail, userPassword } = request.body;
     if (!userEmail || !userPassword) {
-      return responce.status(200).json({
-        success: false,
-        msg: "All fields are required",
-      });
+      throw new Error("All fields are required");
     }
 
     const checkUser = await User.findOne({ userEmail });
 
     if (!checkUser) {
-      return responce.status(200).json({
-        success: false,
-        msg: "User not found",
-      });
+      throw new Error("User not found");
     }
 
     if (await bcrypt.compare(userPassword, checkUser?.userPassword)) {
@@ -86,13 +74,10 @@ const loginUser = async (request, responce) => {
         },
       });
     } else {
-      return responce.status(200).json({
-        success: false,
-        msg: "Invalid password",
-      });
+      throw new Error("Invalid password");
     }
   } catch (error) {
-    return responce.status(500).json({
+    return responce.status(200).json({
       success: false,
       msg: error.message,
     });

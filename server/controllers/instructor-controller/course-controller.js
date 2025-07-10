@@ -37,10 +37,7 @@ const addNewCourse = async (request, responce) => {
       !date ||
       !curriculum.length > 0
     ) {
-      return responce.status(200).json({
-        success: false,
-        msg: "All fields are required",
-      });
+      throw new Error("All fields are required");
     }
     const newlyCreatedCourse = await Course.create({
       instructorId,
@@ -58,7 +55,7 @@ const addNewCourse = async (request, responce) => {
       students: [],
       curriculum,
       isPublished,
-      date
+      date,
     });
 
     return responce.status(200).json({
@@ -73,6 +70,7 @@ const addNewCourse = async (request, responce) => {
     });
   }
 };
+//==================================================
 const getAllCourses = async (request, responce) => {
   try {
     const courseLists = await Course.find({});
@@ -88,6 +86,8 @@ const getAllCourses = async (request, responce) => {
     });
   }
 };
+//==================================================
+
 const getCourseById = async (request, responce) => {
   try {
     const { id } = request.params;
@@ -108,6 +108,8 @@ const getCourseById = async (request, responce) => {
     });
   }
 };
+//==================================================
+
 const updateCourseById = async (request, responce) => {
   try {
     const { id } = request.params;
@@ -130,6 +132,8 @@ const updateCourseById = async (request, responce) => {
     });
   }
 };
+//==================================================
+
 const deleteCourseById = async (request, responce) => {
   try {
     const { id } = request.params;
@@ -151,6 +155,8 @@ const deleteCourseById = async (request, responce) => {
     });
   }
 };
+
+//==================================================
 
 export {
   addNewCourse,
