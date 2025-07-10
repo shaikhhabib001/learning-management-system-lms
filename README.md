@@ -23,4 +23,10 @@ Use this section to tell people how to report a vulnerability.
 
 Tell them where to go, how often they can expect to get an update on a
 reported vulnerability, what to expect if the vulnerability is accepted or
+<<<<<<< HEAD
 declined, etc.
+=======
+declined, etc.
+
+================================================
+>>>>>>> fad062c1cd9a558673fb4d5a0db7fc7a0b7721fd
