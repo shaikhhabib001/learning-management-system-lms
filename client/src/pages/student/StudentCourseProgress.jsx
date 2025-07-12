@@ -19,7 +19,7 @@ import { AuthState } from '@/context/auth-context/Auth-Context'
 
 function StudentCourseProgress() {
 
-    const { handleOnCourseNavigate, handleOnGetCourseProgress, couresProgressDetail, handleOnResetCourseProgress } = useContext(StudentState);
+    const { handleOnGetCourseProgress, couresProgressDetail, handleOnResetCourseProgress, handleOnLectureViewed } = useContext(StudentState);
     const { auth } = useContext(AuthState);
     const param = useParams();
 
@@ -28,7 +28,7 @@ function StudentCourseProgress() {
     const [showCourseCompleteDialog, setShowCourseCompleteDialog] = useState(false)
     const [showConfetti, setShowConfetti] = useState(false)
 
-    const [currentLecture, setCurrentLecture] = useState(null);
+    const [currentLecture, setCurrentLecture] = useState({});
 
     const navigate = useNavigate();
 
@@ -43,12 +43,6 @@ function StudentCourseProgress() {
     }, [])
 
     useEffect(() => {
-        if (!couresProgressDetail?.isCourseBought) {
-            navigate(`/student-course-details/${param.id}`)
-        }
-    }, [])
-
-    useEffect(() => {
         setShowCourseCompleteDialog(couresProgressDetail?.isCourseCompleted)
         setShowConfetti(couresProgressDetail?.isCourseCompleted)
     }, [couresProgressDetail])
@@ -56,6 +50,14 @@ function StudentCourseProgress() {
     const handleOnWatchVideo = (lecture) => {
         if (!lecture.completed) {
             setCurrentLecture(lecture)
+        }
+    }
+
+
+    const handleOnVideoEnded = async () => {
+        const data = await handleOnLectureViewed(param.id, auth.user._id, currentLecture.public_id);
+        if (data.success) {
+            handleOnGetCourseProgress(param.id, auth.user._id)
         }
     }
 
@@ -84,7 +86,7 @@ function StudentCourseProgress() {
                 <div className='flex flex-1 overflow-hidden'>
                     {/* Video Area */}
                     <div className={`flex-1 transition-all duration-300 ${isSideBarOpen ? 'mr-[400px]' : ''}`}>
-                        <VideoPlayer url={currentLecture?.videoUrl} />
+                        <VideoPlayer onEnded={handleOnVideoEnded} url={currentLecture?.videoUrl} />
                         <div className='p-6'>
                             <h2 className='text-2xl font-bold mb-2'>{currentLecture?.title}</h2>
                         </div>

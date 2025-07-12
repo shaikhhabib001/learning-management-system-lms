@@ -109,7 +109,6 @@ function StudentContext({ children }) {
         navigate(`/student-course-progress/${courseId}`)
       } else {
         navigate(`/student-course-details/${courseId}`)
-
       }
 
     } catch (error) {
@@ -146,9 +145,26 @@ function StudentContext({ children }) {
     }
   }
 
+  const handleOnLectureViewed = async (courseId, studentId, lectureId) => {
+    try {
+
+      const { data } = await axios.post(`http://localhost:5000/api/v1/student-course-progress/mark-lecture-viewed/${courseId}/${studentId}/${lectureId}`)
+      if (data.success) {
+        toast(data.msg)
+        return new Promise((res, rej) => {
+          res(data)
+        });
+      }
+    } catch (error) {
+      console.log(error);
+
+    }
+
+  }
+
 
   return (
-    <StudentState.Provider value={{ isLoading, couresList, getAllStudentCourses, getStudentCouresDetails, couresDetail, createOrder, fetchStudentBoughtCourses, studentBoughtCoursesList, handleOnCourseNavigate, handleOnGetCourseProgress, couresProgressDetail, handleOnResetCourseProgress }}>
+    <StudentState.Provider value={{ isLoading, couresList, getAllStudentCourses, getStudentCouresDetails, couresDetail, createOrder, fetchStudentBoughtCourses, studentBoughtCoursesList, handleOnCourseNavigate, handleOnGetCourseProgress, couresProgressDetail, handleOnResetCourseProgress, handleOnLectureViewed }}>
       {children}
     </StudentState.Provider>
   )
